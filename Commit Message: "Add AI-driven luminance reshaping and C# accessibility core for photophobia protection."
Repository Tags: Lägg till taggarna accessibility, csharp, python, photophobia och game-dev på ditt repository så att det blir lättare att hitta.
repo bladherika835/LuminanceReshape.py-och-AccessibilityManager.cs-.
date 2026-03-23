@@ -1,30 +1,34 @@
-import numpy as np
+using System;
 
-class AIReshapeEngine:
-    """
-    AI-driven engine for real-time luminance remapping.
-    Optimized for Low RAM environments (Mobile/Legacy PC).
-    Focus: Photophobia Accessibility for Horse Simulation Engines.
-    """
-    def __init__(self, threshold=0.75, dampening_factor=0.5):
-        self.threshold = threshold
-        self.dampening = dampening_factor
+namespace CrystalHorseWorld.Core
+{
+    /// <summary>
+    /// Lead Architect implementation for Visual Accessibility.
+    /// Bridges the gap between modern engines and legacy aesthetics.
+    /// </summary>
+    public class AccessibilityManager
+    {
+        public bool IsLegacyModeEnabled { get; set; } = true;
+        public float TargetBrightness { get; private set; } = 0.45f;
+        public bool DisableBloom { get; private set; } = true;
 
-    def process_frame(self, frame_data):
-        """
-        Analyzes pixel data and reshapes 'toxic' brightness levels 
-        into safe, matte legacy aesthetics (2011 style).
-        """
-        # Efficient vector processing to minimize RAM usage
-        bright_pixels = frame_data > self.threshold
-        
-        # Reshaping the light instead of clipping it
-        reshaped_frame = np.where(
-            bright_pixels, 
-            frame_data * self.dampening, 
-            frame_data
-        )
-        return reshaped_frame
+        public void ApplySafetyFilters()
+        {
+            if (IsLegacyModeEnabled)
+            {
+                // Forcing the engine to bypass high-contrast shaders
+                DisableBloom = true;
+                TargetBrightness = 0.45f; 
+                
+                Console.WriteLine("[CORE] Safety filters active: Bloom disabled, Brightness normalized.");
+                Console.WriteLine("[CORE] Emulating 2011-2017 matte rendering for light sensitivity.");
+            }
+        }
 
-# Technical proof: Memory-efficient light normalization
-print("AI Reshape Engine: Initialized for Photophobia Protection.")
+        public void LogTechnicalStatus()
+        {
+            Console.WriteLine($"Current Engine State: LegacyMode={IsLegacyModeEnabled} | Bloom={!DisableBloom}");
+        }
+    }
+}
+
