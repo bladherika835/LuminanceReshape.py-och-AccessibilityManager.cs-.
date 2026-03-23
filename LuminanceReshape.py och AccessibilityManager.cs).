@@ -1,0 +1,20 @@
+import numpy as np
+
+def ai_reshape_luminance(image_data):
+    """
+    AI-logik som identifierar 'farliga' ljusnivåer (Bloom/Glow).
+    Använder Low RAM genom att arbeta med vektorer istället för hela matriser.
+    """
+    # Tröskelvärde för när ljuset blir skadligt (t.ex. 0.8 av 1.0)
+    SENSITIVITY_THRESHOLD = 0.75 
+    
+    # Identifiera pixlar som är för ljusa
+    bright_mask = image_data > SENSITIVITY_THRESHOLD
+    
+    # "Reshape" - AI:n tvingar ner de ljusa pixlarna till en säker nivå
+    # istället för att bara klippa bort dem.
+    reshaped_data = np.where(bright_mask, 
+                             image_data * 0.6, # Sänk bara de ljusa delarna
+                             image_data)       # Behåll mörka delar som de är
+                             
+    return reshaped_data
